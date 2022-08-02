@@ -13,11 +13,14 @@ oprf_server_key = 1234567891011121314151617181920
 server_point_precomputed = (oprf_server_key % order_of_generator) * G
 
 server_set = []
-f = open('pswserver.txt', 'r')
-lines = f.readlines()
+inputFileName = input("Inserisci il nome di un file di input (PER ESEMPIO BASE 'pswserver.txt': ")
+inputFileName = open(inputFileName, 'r')
+print("File aperto", inputFileName, "per lettura.")
+lines = inputFileName.readlines()
 for item in lines:
     server_set.append(int(item[:-1].encode('utf-8').hex(),16))
-print(len(server_set))
+server_set.sort()
+print(bytes.fromhex(hex(server_set[0])[2:]).decode('utf-8'))
 t0 = time()
 #The PRF function is applied on the set of the server, using parallel computation
 PRFed_server_set = server_prf_offline_parallel(server_set, server_point_precomputed)
@@ -61,7 +64,7 @@ f = open('server_preprocessed', 'wb')
 pickle.dump(poly_coeffs, f)
 f.close()
 t3 = time()
-#print('OPRF preprocessing time {:.2f}s'.format(t1 - t0))
-#print('Hashing time {:.2f}s'.format(t2 - t1))
-#print('Poly coefficients from roots time {:.2f}s'.format(t3 - t2))
+print('OPRF preprocessing time {:.2f}s'.format(t1 - t0))
+print('Hashing time {:.2f}s'.format(t2 - t1))
+print('Poly coefficients from roots time {:.2f}s'.format(t3 - t2))
 print('Server OFFLINE time {:.2f}s'.format(t3 - t0))

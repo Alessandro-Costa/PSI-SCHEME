@@ -123,10 +123,12 @@ for matrix in windowed_items:
 
 count = [0] * alpha
 
-g = open('pswclient.txt', 'r')
-client_set_entries = g.readlines()
-
-g.close()
+inputFileName = input("Inserisci il nome di un file di input (PER ESEMPIO BASE 'pswclient.txt': ")
+inputFileName = open(inputFileName, 'r')
+print("File aperto", inputFileName, "per lettura.")
+client_set_entries = inputFileName.readlines()
+print("Stampo le entri del client_set",client_set_entries)
+inputFileName.close()
 client_intersection = []
 for j in range(alpha):
     for i in range(poly_modulus_degree):
@@ -139,11 +141,11 @@ for j in range(alpha):
             index = PRFed_client_set.index(PRFed_common_element)
             client_intersection.append(bytes.fromhex(hex(int(client_set_entries[index][:-1].encode('utf-8').hex(),16))[2:]).decode("utf-8"))
 client_intersection.sort()
-
+print("Stampo l'intersezione del client", client_intersection)
 h = open('intersection', 'r')
 real_intersection = [bytes.fromhex(hex(int(line[:-1].encode('utf-8').hex(),16))[2:]).decode("utf-8") for line in h]
 real_intersection.sort()
-
+print("Stampo l'intersezione del reale", real_intersection)
 h.close()
 t3 = time()
 
